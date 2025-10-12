@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import About from '../../components/sections/About.astro';
+import Projects from '../../components/sections/Projects.astro';
+import Experience from '../../components/sections/Experience.astro';
+import Skills from '../../components/sections/Skills.astro';
+import Contact from '../../components/sections/Contact.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={`${t('hero.title')} - ${t('hero.name')}`} lang={lang}>
+	<Hero />
+	<About />
+	<Projects />
+	<Experience />
+	<Skills />
+	<Contact />
+</BaseLayout>

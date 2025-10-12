@@ -1,0 +1,85 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const skills = {
+  backend: [
+    { name: 'PHP', level: t('skills.level.advanced') },
+    { name: 'Laravel', level: t('skills.level.advanced') },
+    { name: 'Python', level: t('skills.level.intermediate') },
+    { name: 'FastAPI', level: t('skills.level.intermediate') },
+    { name: 'API Development', level: t('skills.level.advanced') }
+  ],
+  frontend: [
+    { name: 'JavaScript', level: t('skills.level.advanced') },
+    { name: 'Next.js', level: t('skills.level.intermediate') },
+    { name: 'Livewire', level: t('skills.level.intermediate') },
+    { name: 'AlpineJS', level: t('skills.level.intermediate') },
+    { name: 'Tailwind CSS', level: t('skills.level.advanced') },
+    { name: 'HTML5', level: t('skills.level.expert') },
+    { name: 'CSS3', level: t('skills.level.advanced') },
+    { name: 'jQuery', level: t('skills.level.intermediate') },
+    { name: 'Bootstrap', level: t('skills.level.intermediate') }
+  ],
+  databases: [
+    { name: 'PostgreSQL', level: t('skills.level.advanced') },
+    { name: 'MySQL', level: t('skills.level.intermediate') },
+    { name: 'pgvector', level: t('skills.level.intermediate') }
+  ],
+  tools: [
+    { name: 'Git', level: t('skills.level.advanced') },
+    { name: 'GitHub', level: t('skills.level.advanced') },
+    { name: 'Docker', level: t('skills.level.intermediate') },
+    { name: 'Linux (Ubuntu)', level: t('skills.level.intermediate') },
+    { name: 'VirtualBox', level: t('skills.level.intermediate') }
+  ],
+  other: [
+    { name: 'JIRA', level: t('skills.level.intermediate') },
+    { name: 'Confluence', level: t('skills.level.intermediate') },
+    { name: 'VS Code', level: t('skills.level.advanced') },
+    { name: 'PHPStorm', level: t('skills.level.intermediate') }
+  ],
+  languages: [
+    { name: 'Español', level: t('skills.level.native') },
+    { name: 'Alemán', level: t('skills.level.intermediate') },
+    { name: 'Inglés', level: t('skills.level.beginner') }
+  ]
+};
+
+const categories = [
+  { key: 'backend', title: t('skills.backend'), skills: skills.backend },
+  { key: 'frontend', title: t('skills.frontend'), skills: skills.frontend },
+  { key: 'databases', title: t('skills.databases'), skills: skills.databases },
+  { key: 'tools', title: t('skills.tools'), skills: skills.tools },
+  { key: 'other', title: t('skills.other'), skills: skills.other },
+  { key: 'languages', title: t('skills.languages'), skills: skills.languages }
+];
+---
+
+<section id="skills" class="py-20 px-4">
+  <div class="container mx-auto max-w-6xl">
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+      {t('skills.title')}
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {categories.map(category => (
+        <div class="bg-secondary/5 border border-secondary/10 rounded-lg p-6">
+          <h3 class="text-2xl font-bold mb-4 text-[var(--color-primary)]">{category.title}</h3>
+          <div class="space-y-3">
+            {category.skills.map(skill => (
+              <div class="flex justify-between items-center">
+                <span class="font-medium">{skill.name}</span>
+                <span class="text-sm text-[var(--text-secondary)] px-2 py-1 bg-secondary/10 rounded">
+                  {skill.level}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

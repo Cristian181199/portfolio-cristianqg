@@ -1,0 +1,20 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="about" class="py-20 px-4 bg-secondary/5">
+  <div class="container mx-auto max-w-4xl">
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+      {t('about.title')}
+    </h2>
+    
+    <div class="prose prose-lg max-w-none">
+      <p class="text-lg md:text-xl leading-relaxed whitespace-pre-line text-[var(--text-secondary)]">
+        {t('about.content')}
+      </p>
+    </div>
+  </div>
+</section>
