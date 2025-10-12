@@ -8,7 +8,6 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://cristianqg.dev',
-  output: 'hybrid',
   integrations: [mdx(), sitemap()],
   i18n: {
     defaultLocale: 'en',

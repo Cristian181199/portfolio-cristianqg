@@ -118,52 +118,39 @@ const t = useTranslations(lang);
 </section>
 
 <script>
+  // Note: For full functionality, you need to:
+  // 1. Add an Astro adapter (e.g., @astrojs/node)
+  // 2. Set output to 'server' or 'hybrid' in astro.config.mjs
+  // 3. Create the /src/pages/api/contact.ts endpoint
+  // See README for instructions
+  
   const form = document.getElementById('contact-form');
   const formMessage = document.getElementById('form-message');
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-    const originalText = submitButton.textContent;
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-    
     const formData = new FormData(form as HTMLFormElement);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message')
-    };
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const message = formData.get('message');
     
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      
-      if (response.ok) {
-        formMessage?.classList.remove('hidden', 'bg-red-500/10', 'text-red-500');
-        formMessage?.classList.add('bg-green-500/10', 'text-green-500');
-        formMessage!.textContent = 'Message sent successfully!';
-        (form as HTMLFormElement).reset();
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (error) {
-      formMessage?.classList.remove('hidden', 'bg-green-500/10', 'text-green-500');
-      formMessage?.classList.add('bg-red-500/10', 'text-red-500');
-      formMessage!.textContent = 'Error sending message. Please try again.';
-    } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = originalText;
-      
-      setTimeout(() => {
-        formMessage?.classList.add('hidden');
-      }, 5000);
-    }
+    // Create mailto link
+    const subject = encodeURIComponent(`Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const mailtoLink = `mailto:cristian181199@gmail.com?subject=${subject}&body=${body}`;
+    
+    // Open default email client
+    window.location.href = mailtoLink;
+    
+    // Show confirmation message
+    formMessage?.classList.remove('hidden', 'bg-red-500/10', 'text-red-500');
+    formMessage?.classList.add('bg-green-500/10', 'text-green-500');
+    formMessage!.textContent = 'Opening your email client...';
+    
+    setTimeout(() => {
+      formMessage?.classList.add('hidden');
+      (form as HTMLFormElement).reset();
+    }, 3000);
   });
 </script>
