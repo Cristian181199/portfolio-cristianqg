@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog', ({ data }) => !data.draft);
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const lang = entry.data.lang;
+const t = useTranslations(lang);
+
+function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  return Math.ceil(words / wordsPerMinute);
+}
+
+const readingTime = calculateReadingTime(entry.body);
+---
+
+<BaseLayout title={`${entry.data.title} - ${t('hero.name')}`} description={entry.data.description} lang={lang}>
+  <article class="container mx-auto px-4 py-12 max-w-4xl">
+    <a href={getLocalizedPath('/blog', lang)} class="inline-flex items-center text-[var(--color-primary)] hover:underline mb-8">
+      ← {t('blog.backToBlog')}
+    </a>
+    
+    <header class="mb-12">
+      <h1 class="text-5xl font-bold mb-4">{entry.data.title}</h1>
+      
+      <div class="flex items-center space-x-4 text-[var(--text-secondary)] mb-6">
+        <time datetime={entry.data.pubDate.toISOString()}>
+          {entry.data.pubDate.toLocaleDateString(lang, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}
+        </time>
+        <span>•</span>
+        <span>{readingTime} {t('blog.readingTime')}</span>
+      </div>
+      
+      {entry.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {entry.data.tags.map((tag) => (
+            <span class="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full text-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+    
+    <div class="prose prose-lg max-w-none
+      prose-headings:font-bold prose-headings:text-[var(--text-primary)]
+      prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
+      prose-p:text-[var(--text-secondary)] prose-p:leading-relaxed
+      prose-a:text-[var(--color-primary)] prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-[var(--text-primary)] prose-strong:font-semibold
+      prose-code:text-[var(--color-primary)] prose-code:bg-secondary/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+      prose-pre:bg-secondary/10 prose-pre:border prose-pre:border-secondary/20
+      prose-ul:text-[var(--text-secondary)]
+      prose-ol:text-[var(--text-secondary)]
+      prose-li:text-[var(--text-secondary)]
+      prose-blockquote:border-l-4 prose-blockquote:border-[var(--color-primary)] prose-blockquote:pl-4 prose-blockquote:italic"
+    >
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

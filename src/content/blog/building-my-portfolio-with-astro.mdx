@@ -1,0 +1,233 @@
+---
+title: "Building My Personal Portfolio with Astro and Tailwind CSS"
+description: "A comprehensive look into the process of building a modern, multilingual portfolio with blog functionality using Astro, Tailwind CSS, and other modern web technologies."
+pubDate: 2025-01-12
+lang: en
+tags: ["Astro", "Tailwind CSS", "TypeScript", "Web Development", "i18n"]
+draft: false
+---
+
+## Introduction
+
+When I set out to build my personal portfolio and blog, I had a clear vision: create a modern, performant website that would showcase my work while being maintainable and scalable. After evaluating several frameworks, I chose **Astro** for its simplicity, performance, and flexibility.
+
+In this article, I'll walk you through the entire development process, the technologies I used, and the challenges I faced along the way.
+
+## Technology Stack
+
+### Core Technologies
+
+- **Astro 5.x**: The main framework, chosen for its islands architecture and excellent performance
+- **TypeScript**: For type safety and better developer experience
+- **Tailwind CSS v4**: For styling with a utility-first approach
+- **MDX**: For writing blog content with the ability to use React components
+
+### Additional Libraries
+
+- **Resend**: For handling contact form submissions
+- **@fontsource**: For self-hosting Inter and JetBrains Mono fonts
+- **Astro Sitemap**: For automatic sitemap generation
+
+## Project Structure
+
+The project follows Astro's recommended structure with some custom additions for internationalization:
+
+```
+portfolio-cristianqg/
+├── src/
+│   ├── components/
+│   │   ├── sections/          # Homepage sections
+│   │   ├── Header.astro
+│   │   ├── Footer.astro
+│   │   ├── ThemeToggle.astro
+│   │   └── LanguageSelector.astro
+│   ├── content/
+│   │   └── blog/               # Blog posts in MDX
+│   ├── i18n/
+│   │   ├── en.json
+│   │   ├── es.json
+│   │   ├── de.json
+│   │   └── utils.ts
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   ├── index.astro         # English homepage
+│   │   ├── es/
+│   │   │   └── index.astro     # Spanish homepage
+│   │   ├── de/
+│   │   │   └── index.astro     # German homepage
+│   │   └── blog/
+│   │       ├── index.astro
+│   │       └── [...slug].astro
+│   └── styles/
+│       └── global.css
+└── public/
+```
+
+## Key Features
+
+### 1. Internationalization (i18n)
+
+One of the most challenging aspects was implementing proper internationalization. I wanted to support three languages: English, Spanish, and German.
+
+#### Solution
+
+I created a custom i18n system using JSON files for translations and utility functions to handle language detection and translation:
+
+```typescript
+// src/i18n/utils.ts
+export function getLangFromUrl(url: URL) {
+  const [, lang] = url.pathname.split('/');
+  if (lang in translations) return lang;
+  return defaultLang;
+}
+
+export function useTranslations(lang: string) {
+  return function t(key: string) {
+    // Translation logic
+  };
+}
+```
+
+### 2. Theme System
+
+I implemented a dark/light theme system that persists user preferences using localStorage. The system defaults to dark mode and respects user system preferences.
+
+```typescript
+const currentTheme = localStorage.getItem('theme') || 'dark';
+```
+
+### 3. Content Collections
+
+For the blog, I used Astro's Content Collections API with a schema to ensure type safety:
+
+```typescript
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.date(),
+    lang: z.enum(['en', 'es', 'de']),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+```
+
+### 4. Design System
+
+I created a cohesive design system using CSS custom properties for colors:
+
+- Background Dark: `#18181B`
+- Text Light: `#FEF7ED`
+- Primary/Accent: `#EA580C`
+- Secondary: `#71717A`
+
+The design is minimalist, focusing on readability and user experience. All colors meet WCAG 2.1 accessibility standards for contrast.
+
+### 5. Responsive Navigation
+
+The header includes a responsive navigation menu that collapses into a hamburger menu on mobile devices, ensuring a great experience across all screen sizes.
+
+## Portfolio Sections
+
+The homepage is divided into several sections:
+
+1. **Hero**: Introduction with call-to-action buttons
+2. **About**: Personal philosophy and approach to work
+3. **Projects**: Showcase of key projects with links to repositories
+4. **Experience**: Professional timeline with technologies used
+5. **Skills**: Categorized technical skills with proficiency levels
+6. **Contact**: Form for reaching out (integrates with Resend API)
+
+## Blog Functionality
+
+The blog includes:
+
+- **Search**: Client-side search filtering by title, description, and tags
+- **Tags**: Categorization system for organizing posts
+- **Reading Time**: Automatic calculation based on word count
+- **Multilingual**: Posts can be written in any of the three supported languages
+- **Syntax Highlighting**: Code blocks with proper formatting
+- **Draft Mode**: Ability to hide posts from production
+
+## Performance Optimizations
+
+- **Static Site Generation**: All pages are pre-rendered at build time
+- **Font Optimization**: Self-hosted fonts to reduce external requests
+- **Image Optimization**: Astro's built-in image optimization
+- **Minimal JavaScript**: Only essential client-side scripts are loaded
+
+## Deployment Strategy
+
+The site is deployed on my own Hetzner server using Dokploy, which automatically deploys changes from the GitHub repository.
+
+## Challenges and Solutions
+
+### Challenge 1: Managing Multilingual Routes
+
+**Problem**: Keeping routes consistent across languages while maintaining SEO.
+
+**Solution**: Created utility functions to generate localized paths and used Astro's routing configuration to handle the default language without a prefix.
+
+### Challenge 2: Theme Flash on Page Load
+
+**Problem**: Brief flash of wrong theme before JavaScript executes.
+
+**Solution**: Inline critical JavaScript in the head to set theme before content renders.
+
+### Challenge 3: Blog Post Language Isolation
+
+**Problem**: Ensuring users only see posts in their selected language.
+
+**Solution**: Filtered blog posts by language in the collection query:
+
+```typescript
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.lang === lang && !data.draft;
+});
+```
+
+## Lessons Learned
+
+1. **Start with Accessibility**: Building with accessibility in mind from the beginning is much easier than retrofitting it later.
+
+2. **Type Safety Matters**: TypeScript caught numerous potential bugs during development.
+
+3. **CSS Variables are Powerful**: Using CSS custom properties made theme switching trivial and maintainable.
+
+4. **Content Collections are Amazing**: Astro's Content Collections API provides excellent developer experience with type safety and validation.
+
+5. **Performance by Default**: Astro's architecture makes it easy to build fast websites without much optimization effort.
+
+## Future Improvements
+
+While the portfolio is functional and meets my current needs, there are several enhancements I'd like to add:
+
+- **RSS Feed**: For blog subscribers
+- **Comments System**: To enable discussion on blog posts
+- **Analytics Dashboard**: Custom analytics visualization
+- **Newsletter Integration**: For notifying subscribers of new posts
+- **Dark Mode for Code Blocks**: Better syntax highlighting themes
+
+## Conclusion
+
+Building this portfolio with Astro was an excellent learning experience. The framework's simplicity and performance focus align perfectly with my development philosophy of creating clean, maintainable code.
+
+The combination of Astro, Tailwind CSS, and TypeScript provided a solid foundation for building a modern, professional portfolio that's easy to maintain and extend.
+
+If you're considering building your own portfolio, I highly recommend giving Astro a try. Its learning curve is gentle, but it's powerful enough for complex requirements like internationalization and content management.
+
+You can view the source code for this project on my [GitHub](https://github.com/Cristian181199/portfolio-cristianqg).
+
+## Resources
+
+- [Astro Documentation](https://docs.astro.build/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [MDX Documentation](https://mdxjs.com/)
+- [Resend Documentation](https://resend.com/docs)
+
+---
+
+*Thank you for reading! Feel free to reach out if you have any questions about the implementation or would like to discuss web development.*
