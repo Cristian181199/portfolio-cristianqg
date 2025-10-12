@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "about": "Über mich",
+    "projects": "Projekte",
+    "experience": "Erfahrung",
+    "skills": "Fähigkeiten",
+    "contact": "Kontakt",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Full Stack Entwickler",
+    "name": "Cristian Quintero García",
+    "description": "Hallo! Ich bin Cristian, ein leidenschaftlicher Back-End-Entwickler. Meine Faszination für Informatik begann schon früh, angetrieben von dem Wunsch, eines Tages Software zu entwickeln, die Menschen gerne nutzen. Diese Leidenschaft bleibt mein Hauptantrieb: Es gibt nichts Befriedigenderes für mich, als eine Idee in ein funktionales Produkt umzuwandeln und positives Feedback von Nutzern zu erhalten. Der Weg dorthin - Probleme kreativ zu lösen, aus Fehlern zu lernen und technische Herausforderungen zu meistern - begeistert mich jeden Tag.",
+    "location": "Bremen, Deutschland"
+  },
+  "about": {
+    "title": "Über mich",
+    "content": "In meiner Arbeitsweise verfolge ich einen strukturierten und durchdachten Ansatz. Ich zerlege komplexe Probleme systematisch in kleinere, handhabbare Aufgaben, um Schritt für Schritt zu einer robusten Lösung zu gelangen. Ich lege größten Wert auf Codequalität. Für mich ist saubere, lesbare und wartbare Software kein optionales Extra, sondern die Grundlage für nachhaltige und erfolgreiche Projekte.\n\nIm Team schätze ich eine ausgewogene Mischung aus intensiver Zusammenarbeit - sei es beim gemeinsamen Brainstorming oder bei gegenseitiger Unterstützung - und konzentrierter Einzelarbeit, um anspruchsvolle Herausforderungen zu meistern.\n\nFür meine berufliche Zukunft strebe ich danach, mich als Senior-Entwickler weiterzuentwickeln, der nicht nur technische Exzellenz in modernen Technologien erreicht, sondern auch sein Wissen teilen und jüngere Kollegen anleiten kann. Ich suche ein Umfeld, das interessante Herausforderungen und ein positives Arbeitsklima mit einer gesunden Work-Life-Balance verbindet."
+  },
+  "projects": {
+    "title": "Projekte",
+    "viewCode": "Code ansehen",
+    "portfolio": {
+      "name": "Portfolio & Blog",
+      "description": "Modernes persönliches Portfolio mit integriertem Blog, erstellt mit Astro und Tailwind CSS. Mit mehrsprachiger Unterstützung (Englisch, Spanisch, Deutsch), Hell-/Dunkelmodus und responsivem Design.",
+      "tech": ["Astro", "TypeScript", "Tailwind CSS", "Resend"]
+    },
+    "webscraper": {
+      "name": "Retailflux Webscraper",
+      "description": "Fortschrittlicher Web-Scraper für deutsche Supermarktdaten mit KI-gestützten Embeddings und PostgreSQL-Speicherung.",
+      "tech": ["Python", "Scrapy", "OpenAI", "Docker", "SQLAlchemy"]
+    },
+    "api": {
+      "name": "Retailflux API",
+      "description": "KI-gestützte REST-API für Produktsuche und -empfehlungen in deutschen Supermärkten, erstellt mit FastAPI.",
+      "tech": ["Python", "FastAPI", "Docker", "SQLAlchemy", "NLP", "OpenAI API"]
+    }
+  },
+  "experience": {
+    "title": "Erfahrung",
+    "present": "Heute",
+    "php_dev": {
+      "title": "PHP Entwickler",
+      "company": "two S GmbH",
+      "location": "Sittensen, Deutschland",
+      "period": "Juli 2024 - Heute",
+      "description": "Tätigkeit als PHP-Entwickler, Beitrag zur Entwicklung und Wartung von Webanwendungen unter Verwendung moderner PHP-Frameworks und -Technologien.",
+      "tech": ["PHP", "Laravel", "PostgreSQL", "MySQL", "JavaScript", "HTML5", "CSS3"]
+    },
+    "intern": {
+      "title": "Webentwickler (Praktikum)",
+      "company": "Stadtverwaltung Sanlúcar de Barrameda",
+      "location": "Sanlúcar de Barrameda, Spanien",
+      "period": "März 2022 - Juni 2022",
+      "description": "Wartung und Fehlerbehebung interner Webanwendungen unter Verwendung von PHP 7.4, Yii2-Framework und PostgreSQL. Entwicklung neuer Funktionen und Cloud-Bereitstellung von Anwendungen.",
+      "tech": ["PHP 7.4", "Yii2", "PostgreSQL", "Cloud Deployment", "HTML5", "CSS3", "JavaScript"]
+    }
+  },
+  "skills": {
+    "title": "Fähigkeiten",
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "databases": "Datenbanken",
+    "tools": "Tools & DevOps",
+    "other": "Andere Tools",
+    "languages": "Sprachen",
+    "level": {
+      "expert": "Experte",
+      "advanced": "Fortgeschritten",
+      "intermediate": "Mittel",
+      "beginner": "Anfänger",
+      "native": "Muttersprache"
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie mich",
+    "description": "Haben Sie ein Projekt im Kopf oder möchten Sie sich vernetzen? Zögern Sie nicht, mich zu kontaktieren!",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "message": "Nachricht",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
+    },
+    "email": "E-Mail",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Mehr lesen",
+    "backToBlog": "Zurück zum Blog",
+    "search": "Artikel suchen...",
+    "noResults": "Keine Artikel gefunden.",
+    "tags": "Tags",
+    "publishedOn": "Veröffentlicht am",
+    "readingTime": "Min. Lesezeit"
+  },
+  "footer": {
+    "copyright": "Alle Rechte vorbehalten."
+  },
+  "theme": {
+    "toggle": "Theme wechseln",
+    "light": "Heller Modus",
+    "dark": "Dunkler Modus"
+  },
+  "language": {
+    "select": "Sprache wählen"
+  }
+}

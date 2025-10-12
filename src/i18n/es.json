@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "skills": "Habilidades",
+    "contact": "Contacto",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Desarrollador Full Stack",
+    "name": "Cristian Quintero García",
+    "description": "¡Hola! Soy Cristian, un desarrollador back-end apasionado. Mi fascinación por la informática comenzó desde joven, impulsado por el deseo de algún día desarrollar software que las personas disfruten usar. Esta pasión sigue siendo mi motor central: no hay nada más gratificante para mí que convertir una idea en un producto funcional y recibir comentarios positivos de los usuarios. El camino hacia ello - resolver problemas creativamente, aprender de los errores y dominar desafíos técnicos - es lo que me emociona cada día.",
+    "location": "Bremen, Alemania"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "content": "En mi forma de trabajar sigo un enfoque estructurado y reflexivo. Descompongo los problemas complejos sistemáticamente en tareas más pequeñas y manejables, para llegar paso a paso a una solución robusta. Doy la máxima importancia a la calidad del código. Para mí, el software limpio, legible y mantenible no es un extra opcional, sino la base para proyectos duraderos y exitosos.\n\nEn el equipo valoro una mezcla equilibrada de colaboración intensiva - ya sea en el brainstorming conjunto o en el apoyo mutuo - y trabajo individual concentrado, para dominar desafíos exigentes.\n\nPara mi futuro profesional aspiro a desarrollarme como un desarrollador senior que no solo alcance la excelencia técnica en tecnologías modernas, sino que también comparta su conocimiento y pueda guiar a colegas más jóvenes. Busco un entorno que combine desafíos interesantes y un clima de trabajo positivo con un equilibrio saludable entre vida laboral y personal."
+  },
+  "projects": {
+    "title": "Proyectos",
+    "viewCode": "Ver Código",
+    "portfolio": {
+      "name": "Portfolio y Blog",
+      "description": "Portfolio personal moderno con blog integrado construido con Astro y Tailwind CSS. Incluye soporte multiidioma (inglés, español, alemán), modo oscuro/claro y diseño responsivo.",
+      "tech": ["Astro", "TypeScript", "Tailwind CSS", "Resend"]
+    },
+    "webscraper": {
+      "name": "Retailflux Webscraper",
+      "description": "Web scraper avanzado para datos de supermercados alemanes con embeddings impulsados por IA y almacenamiento PostgreSQL.",
+      "tech": ["Python", "Scrapy", "OpenAI", "Docker", "SQLAlchemy"]
+    },
+    "api": {
+      "name": "Retailflux API",
+      "description": "API REST impulsada por IA para búsqueda y recomendaciones de productos de supermercados alemanes construida con FastAPI.",
+      "tech": ["Python", "FastAPI", "Docker", "SQLAlchemy", "NLP", "OpenAI API"]
+    }
+  },
+  "experience": {
+    "title": "Experiencia",
+    "present": "Actualidad",
+    "php_dev": {
+      "title": "Desarrollador PHP",
+      "company": "two S GmbH",
+      "location": "Sittensen, Alemania",
+      "period": "Julio 2024 - Actualidad",
+      "description": "Trabajando como desarrollador PHP, contribuyendo al desarrollo y mantenimiento de aplicaciones web utilizando frameworks modernos de PHP y tecnologías.",
+      "tech": ["PHP", "Laravel", "PostgreSQL", "MySQL", "JavaScript", "HTML5", "CSS3"]
+    },
+    "intern": {
+      "title": "Desarrollador Web (Prácticas)",
+      "company": "Ayuntamiento de Sanlúcar de Barrameda",
+      "location": "Sanlúcar de Barrameda, España",
+      "period": "Marzo 2022 - Junio 2022",
+      "description": "Mantenimiento y resolución de problemas de aplicaciones web internas usando PHP 7.4, framework Yii2 y PostgreSQL. Desarrollo de nuevas funcionalidades y despliegue en la nube de aplicaciones.",
+      "tech": ["PHP 7.4", "Yii2", "PostgreSQL", "Cloud Deployment", "HTML5", "CSS3", "JavaScript"]
+    }
+  },
+  "skills": {
+    "title": "Habilidades",
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "databases": "Bases de Datos",
+    "tools": "Herramientas y DevOps",
+    "other": "Otras Herramientas",
+    "languages": "Idiomas",
+    "level": {
+      "expert": "Experto",
+      "advanced": "Avanzado",
+      "intermediate": "Intermedio",
+      "beginner": "Principiante",
+      "native": "Nativo"
+    }
+  },
+  "contact": {
+    "title": "Contáctame",
+    "description": "¿Tienes un proyecto en mente o quieres conectar? ¡No dudes en contactarme!",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado con éxito!",
+      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
+    },
+    "email": "Correo electrónico",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Leer Más",
+    "backToBlog": "Volver al Blog",
+    "search": "Buscar artículos...",
+    "noResults": "No se encontraron artículos.",
+    "tags": "Etiquetas",
+    "publishedOn": "Publicado el",
+    "readingTime": "min de lectura"
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados."
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "light": "Modo claro",
+    "dark": "Modo oscuro"
+  },
+  "language": {
+    "select": "Seleccionar idioma"
+  }
+}

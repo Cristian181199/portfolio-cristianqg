@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "skills": "Skills",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "hero": {
+    "title": "Full Stack Developer",
+    "name": "Cristian Quintero García",
+    "description": "Hello! I'm Cristian, a passionate back-end developer. My fascination with computer science began at a young age, driven by the desire to someday develop software that people enjoy using. This passion remains my core driver: there's nothing more rewarding for me than turning an idea into a functional product and receiving positive feedback from users. The journey to get there - creatively solving problems, learning from mistakes, and mastering technical challenges - is what excites me every day.",
+    "location": "Bremen, Germany"
+  },
+  "about": {
+    "title": "About Me",
+    "content": "In my way of working, I follow a structured and thoughtful approach. I systematically break down complex problems into smaller, manageable tasks to reach a robust solution step by step. I place the utmost importance on code quality. For me, clean, readable, and maintainable software is not an optional extra, but the foundation for lasting and successful projects.\n\nIn teams, I value a balanced mix of intensive collaboration - whether in joint brainstorming or mutual support - and concentrated individual work to master demanding challenges.\n\nFor my professional future, I aspire to develop as a senior developer who not only achieves technical excellence in modern technologies, but can also share their knowledge and guide younger colleagues. I'm looking for an environment that combines interesting challenges and a positive work climate with a healthy work-life balance."
+  },
+  "projects": {
+    "title": "Projects",
+    "viewCode": "View Code",
+    "portfolio": {
+      "name": "Portfolio & Blog",
+      "description": "Modern personal portfolio with integrated blog built with Astro and Tailwind CSS. Features multilingual support (English, Spanish, German), dark/light mode, and responsive design.",
+      "tech": ["Astro", "TypeScript", "Tailwind CSS", "Resend"]
+    },
+    "webscraper": {
+      "name": "Retailflux Webscraper",
+      "description": "Advanced web scraper for German supermarket data with AI-powered embeddings and PostgreSQL storage.",
+      "tech": ["Python", "Scrapy", "OpenAI", "Docker", "SQLAlchemy"]
+    },
+    "api": {
+      "name": "Retailflux API",
+      "description": "AI-powered REST API for German supermarket product search and recommendations built with FastAPI.",
+      "tech": ["Python", "FastAPI", "Docker", "SQLAlchemy", "NLP", "OpenAI API"]
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "present": "Present",
+    "php_dev": {
+      "title": "PHP Developer",
+      "company": "two S GmbH",
+      "location": "Sittensen, Germany",
+      "period": "July 2024 - Present",
+      "description": "Working as a PHP developer, contributing to web application development and maintenance using modern PHP frameworks and technologies.",
+      "tech": ["PHP", "Laravel", "PostgreSQL", "MySQL", "JavaScript", "HTML5", "CSS3"]
+    },
+    "intern": {
+      "title": "Web Developer (Internship)",
+      "company": "City Council of Sanlúcar de Barrameda",
+      "location": "Sanlúcar de Barrameda, Spain",
+      "period": "March 2022 - June 2022",
+      "description": "Maintenance and troubleshooting of internal web applications using PHP 7.4, Yii2 framework, and PostgreSQL. Development of new functionalities and cloud deployment of applications.",
+      "tech": ["PHP 7.4", "Yii2", "PostgreSQL", "Cloud Deployment", "HTML5", "CSS3", "JavaScript"]
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "databases": "Databases",
+    "tools": "Tools & DevOps",
+    "other": "Other Tools",
+    "languages": "Languages",
+    "level": {
+      "expert": "Expert",
+      "advanced": "Advanced",
+      "intermediate": "Intermediate",
+      "beginner": "Beginner",
+      "native": "Native"
+    }
+  },
+  "contact": {
+    "title": "Contact Me",
+    "description": "Have a project in mind or want to connect? Feel free to reach out!",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
+    },
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read More",
+    "backToBlog": "Back to Blog",
+    "search": "Search articles...",
+    "noResults": "No articles found.",
+    "tags": "Tags",
+    "publishedOn": "Published on",
+    "readingTime": "min read"
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
+  "language": {
+    "select": "Select language"
+  }
+}
