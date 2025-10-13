@@ -8,12 +8,13 @@ const t = useTranslations(lang);
 <section class="py-20 px-4">
   <div class="container mx-auto max-w-4xl">
     <div class="text-center space-y-6">
-      <h1 class="text-5xl md:text-6xl font-bold">
+      <h1 class="text-5xl md:text-6xl font-bold animate-fade-in">
         {t('hero.title')}
       </h1>
       
-      <h2 class="text-3xl md:text-4xl font-semibold text-[var(--color-primary)]">
-        {t('hero.name')}
+      <h2 class="text-3xl md:text-4xl font-semibold text-[var(--color-primary)] min-h-[3rem] md:min-h-[4rem]">
+        <span id="typewriter"></span>
+        <span class="animate-blink">|</span>
       </h2>
       
       <p class="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed whitespace-pre-line">
@@ -56,3 +57,70 @@ const t = useTranslations(lang);
     </div>
   </div>
 </section>
+
+<script define:vars={{ name: t('hero.name') }}>
+  const typewriterElement = document.getElementById('typewriter');
+  const text = name;
+  let index = 0;
+  let isDeleting = false;
+  let loopCount = 0;
+
+  function type() {
+    if (!typewriterElement) return;
+
+    if (!isDeleting && index <= text.length) {
+      typewriterElement.textContent = text.substring(0, index);
+      index++;
+      setTimeout(type, 100);
+    } else if (!isDeleting && index > text.length) {
+      setTimeout(() => {
+        isDeleting = true;
+        type();
+      }, 2000);
+    } else if (isDeleting && index > 0) {
+      typewriterElement.textContent = text.substring(0, index - 1);
+      index--;
+      setTimeout(type, 50);
+    } else if (isDeleting && index === 0) {
+      isDeleting = false;
+      loopCount++;
+      if (loopCount < 3) {
+        setTimeout(type, 500);
+      } else {
+        typewriterElement.textContent = text;
+      }
+    }
+  }
+
+  setTimeout(type, 1000);
+</script>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+</style>
