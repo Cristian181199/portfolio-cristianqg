@@ -2,7 +2,12 @@
 import { languages, getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 
 const currentLang = getLangFromUrl(Astro.url);
-const currentPath = Astro.url.pathname.replace(/^\/(en|es|de)/, '') || '/';
+let currentPath = Astro.url.pathname.replace(/^\/(en|es|de)/, '') || '/';
+
+// If we're in a blog post, redirect to the blog index instead
+if (currentPath.startsWith('/blog/') && currentPath !== '/blog' && currentPath !== '/blog/') {
+  currentPath = '/blog';
+}
 ---
 
 <div class="relative inline-block text-left">

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -36,7 +36,7 @@ const sortedPosts = allPosts.sort(
       ) : (
         sortedPosts.map((post) => (
           <article class="bg-secondary/5 border border-secondary/10 rounded-lg p-6 hover:border-[var(--color-primary)] transition-all duration-300">
-            <a href={`/blog/${post.slug}`}>
+            <a href={getLocalizedPath(`/blog/${post.slug}`, lang)}>
               <h2 class="text-3xl font-bold mb-2 hover:text-[var(--color-primary)] transition-colors">
                 {post.data.title}
               </h2>
@@ -66,7 +66,7 @@ const sortedPosts = allPosts.sort(
               </div>
               
               <a
-                href={`/blog/${post.slug}`}
+                href={getLocalizedPath(`/blog/${post.slug}`, lang)}
                 class="text-[var(--color-primary)] hover:underline font-medium"
               >
                 {t('blog.readMore')} →
