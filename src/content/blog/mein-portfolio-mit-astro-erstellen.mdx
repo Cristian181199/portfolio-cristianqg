@@ -1,0 +1,233 @@
+---
+title: "Mein Persönliches Portfolio mit Astro und Tailwind CSS Erstellen"
+description: "Ein umfassender Einblick in den Prozess der Erstellung eines modernen, mehrsprachigen Portfolios mit Blog-Funktionalität unter Verwendung von Astro, Tailwind CSS und anderen modernen Webtechnologien."
+pubDate: 2025-01-12
+lang: de
+tags: ["Astro", "Tailwind CSS", "TypeScript", "Webentwicklung", "i18n"]
+draft: false
+---
+
+## Einführung
+
+Als ich mich daran machte, mein persönliches Portfolio und Blog zu erstellen, hatte ich eine klare Vision: eine moderne, leistungsstarke Website zu schaffen, die meine Arbeit präsentiert und gleichzeitig wartbar und skalierbar ist. Nach der Bewertung mehrerer Frameworks entschied ich mich für **Astro** aufgrund seiner Einfachheit, Leistung und Flexibilität.
+
+In diesem Artikel führe ich Sie durch den gesamten Entwicklungsprozess, die verwendeten Technologien und die Herausforderungen, denen ich auf dem Weg begegnete.
+
+## Technologie-Stack
+
+### Kerntechnologien
+
+- **Astro 5.x**: Das Haupt-Framework, gewählt für seine Islands-Architektur und exzellente Performance
+- **TypeScript**: Für Typsicherheit und bessere Entwicklererfahrung
+- **Tailwind CSS v4**: Für Styling mit einem Utility-First-Ansatz
+- **MDX**: Zum Schreiben von Blog-Inhalten mit der Möglichkeit, React-Komponenten zu verwenden
+
+### Zusätzliche Bibliotheken
+
+- **Resend**: Zur Handhabung von Kontaktformular-Einsendungen
+- **@fontsource**: Zum Selbst-Hosten der Schriftarten Inter und JetBrains Mono
+- **Astro Sitemap**: Für automatische Sitemap-Generierung
+
+## Projektstruktur
+
+Das Projekt folgt der empfohlenen Astro-Struktur mit einigen benutzerdefinierten Ergänzungen für Internationalisierung:
+
+```
+portfolio-cristianqg/
+├── src/
+│   ├── components/
+│   │   ├── sections/          # Homepage-Abschnitte
+│   │   ├── Header.astro
+│   │   ├── Footer.astro
+│   │   ├── ThemeToggle.astro
+│   │   └── LanguageSelector.astro
+│   ├── content/
+│   │   └── blog/               # Blog-Posts in MDX
+│   ├── i18n/
+│   │   ├── en.json
+│   │   ├── es.json
+│   │   ├── de.json
+│   │   └── utils.ts
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   ├── index.astro         # Englische Homepage
+│   │   ├── es/
+│   │   │   └── index.astro     # Spanische Homepage
+│   │   ├── de/
+│   │   │   └── index.astro     # Deutsche Homepage
+│   │   └── blog/
+│   │       ├── index.astro
+│   │       └── [...slug].astro
+│   └── styles/
+│       └── global.css
+└── public/
+```
+
+## Hauptfunktionen
+
+### 1. Internationalisierung (i18n)
+
+Einer der anspruchsvollsten Aspekte war die Implementierung einer ordnungsgemäßen Internationalisierung. Ich wollte drei Sprachen unterstützen: Englisch, Spanisch und Deutsch.
+
+#### Lösung
+
+Ich erstellte ein benutzerdefiniertes i18n-System mit JSON-Dateien für Übersetzungen und Hilfsfunktionen zur Handhabung der Spracherkennung und Übersetzung:
+
+```typescript
+// src/i18n/utils.ts
+export function getLangFromUrl(url: URL) {
+  const [, lang] = url.pathname.split('/');
+  if (lang in translations) return lang;
+  return defaultLang;
+}
+
+export function useTranslations(lang: string) {
+  return function t(key: string) {
+    // Übersetzungslogik
+  };
+}
+```
+
+### 2. Theme-System
+
+Ich implementierte ein Dunkel/Hell-Theme-System, das Benutzerpräferenzen mit localStorage persistiert. Das System verwendet standardmäßig den Dunkelmodus und respektiert die Systempräferenzen des Benutzers.
+
+```typescript
+const currentTheme = localStorage.getItem('theme') || 'dark';
+```
+
+### 3. Content Collections
+
+Für den Blog verwendete ich Astros Content Collections API mit einem Schema zur Gewährleistung der Typsicherheit:
+
+```typescript
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.date(),
+    lang: z.enum(['en', 'es', 'de']),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+```
+
+### 4. Design-System
+
+Ich erstellte ein kohärentes Design-System mit benutzerdefinierten CSS-Eigenschaften für Farben:
+
+- Dunkler Hintergrund: `#18181B`
+- Heller Text: `#FEF7ED`
+- Primär/Akzent: `#EA580C`
+- Sekundär: `#71717A`
+
+Das Design ist minimalistisch und konzentriert sich auf Lesbarkeit und Benutzererfahrung. Alle Farben erfüllen die WCAG 2.1-Barrierefreiheitsstandards für Kontrast.
+
+### 5. Responsive Navigation
+
+Der Header enthält ein responsives Navigationsmenü, das auf mobilen Geräten zu einem Hamburger-Menü zusammenklappt und so ein großartiges Erlebnis auf allen Bildschirmgrößen gewährleistet.
+
+## Portfolio-Bereiche
+
+Die Homepage ist in mehrere Bereiche unterteilt:
+
+1. **Hero**: Einführung mit Call-to-Action-Buttons
+2. **Über mich**: Persönliche Philosophie und Arbeitsansatz
+3. **Projekte**: Präsentation wichtiger Projekte mit Links zu Repositories
+4. **Erfahrung**: Beruflicher Zeitstrahl mit verwendeten Technologien
+5. **Fähigkeiten**: Kategorisierte technische Fähigkeiten mit Kompetenzniveaus
+6. **Kontakt**: Formular zur Kontaktaufnahme (integriert mit Resend API)
+
+## Blog-Funktionalität
+
+Der Blog umfasst:
+
+- **Suche**: Clientseitige Suchfilterung nach Titel, Beschreibung und Tags
+- **Tags**: Kategorisierungssystem zur Organisation von Posts
+- **Lesezeit**: Automatische Berechnung basierend auf der Wortzahl
+- **Mehrsprachig**: Posts können in jeder der drei unterstützten Sprachen verfasst werden
+- **Syntax-Hervorhebung**: Code-Blöcke mit angemessener Formatierung
+- **Entwurfsmodus**: Möglichkeit, Posts aus der Produktion auszublenden
+
+## Performance-Optimierungen
+
+- **Statische Site-Generierung**: Alle Seiten werden zur Build-Zeit vorgerendert
+- **Schriftart-Optimierung**: Selbst gehostete Schriftarten zur Reduzierung externer Anfragen
+- **Bild-Optimierung**: Astros integrierte Bildoptimierung
+- **Minimales JavaScript**: Es werden nur wesentliche clientseitige Skripte geladen
+
+## Deployment-Strategie
+
+Die Site wird auf meinem eigenen Hetzner-Server mit Dokploy bereitgestellt, das automatisch Änderungen aus dem GitHub-Repository deployed.
+
+## Herausforderungen und Lösungen
+
+### Herausforderung 1: Verwaltung mehrsprachiger Routen
+
+**Problem**: Konsistente Routen zwischen Sprachen beibehalten und gleichzeitig SEO aufrechterhalten.
+
+**Lösung**: Ich erstellte Hilfsfunktionen zur Generierung lokalisierter Pfade und verwendete Astros Routing-Konfiguration zur Handhabung der Standardsprache ohne Präfix.
+
+### Herausforderung 2: Theme-Flash beim Laden der Seite
+
+**Problem**: Kurzer Flash des falschen Themes, bevor JavaScript ausgeführt wird.
+
+**Lösung**: Inline kritisches JavaScript im Head, um das Theme vor dem Rendern des Inhalts zu setzen.
+
+### Herausforderung 3: Sprach-Isolierung in Blog-Posts
+
+**Problem**: Sicherstellen, dass Benutzer nur Posts in ihrer ausgewählten Sprache sehen.
+
+**Lösung**: Blog-Posts nach Sprache in der Collection-Abfrage gefiltert:
+
+```typescript
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.lang === lang && !data.draft;
+});
+```
+
+## Gelernte Lektionen
+
+1. **Mit Barrierefreiheit beginnen**: Von Anfang an mit Barrierefreiheit zu bauen, ist viel einfacher, als sie später nachzurüsten.
+
+2. **Typsicherheit ist wichtig**: TypeScript fing während der Entwicklung zahlreiche potenzielle Bugs ab.
+
+3. **CSS-Variablen sind mächtig**: Die Verwendung von benutzerdefinierten CSS-Eigenschaften machte den Theme-Wechsel trivial und wartbar.
+
+4. **Content Collections sind erstaunlich**: Astros Content Collections API bietet eine hervorragende Entwicklererfahrung mit Typsicherheit und Validierung.
+
+5. **Performance standardmäßig**: Astros Architektur macht es einfach, schnelle Websites ohne viel Optimierungsaufwand zu erstellen.
+
+## Zukünftige Verbesserungen
+
+Obwohl das Portfolio funktional ist und meine aktuellen Bedürfnisse erfüllt, gibt es mehrere Verbesserungen, die ich gerne hinzufügen würde:
+
+- **RSS-Feed**: Für Blog-Abonnenten
+- **Kommentarsystem**: Um Diskussionen über Blog-Posts zu ermöglichen
+- **Analytics-Dashboard**: Benutzerdefinierte Analytics-Visualisierung
+- **Newsletter-Integration**: Um Abonnenten über neue Posts zu benachrichtigen
+- **Dark Mode für Code-Blöcke**: Bessere Syntax-Highlighting-Themes
+
+## Fazit
+
+Der Bau dieses Portfolios mit Astro war eine ausgezeichnete Lernerfahrung. Der Fokus des Frameworks auf Einfachheit und Performance passt perfekt zu meiner Entwicklungsphilosophie, sauberen, wartbaren Code zu erstellen.
+
+Die Kombination aus Astro, Tailwind CSS und TypeScript bot eine solide Grundlage für den Bau eines modernen, professionellen Portfolios, das einfach zu warten und zu erweitern ist.
+
+Wenn Sie erwägen, Ihr eigenes Portfolio zu erstellen, empfehle ich Ihnen nachdrücklich, Astro auszuprobieren. Die Lernkurve ist sanft, aber es ist leistungsstark genug für komplexe Anforderungen wie Internationalisierung und Content-Management.
+
+Sie können den Quellcode dieses Projekts auf meinem [GitHub](https://github.com/Cristian181199/portfolio-cristianqg) einsehen.
+
+## Ressourcen
+
+- [Astro-Dokumentation](https://docs.astro.build/)
+- [Tailwind CSS-Dokumentation](https://tailwindcss.com/docs)
+- [MDX-Dokumentation](https://mdxjs.com/)
+- [Resend-Dokumentation](https://resend.com/docs)
+
+---
+
+*Danke fürs Lesen! Zögern Sie nicht, mich zu kontaktieren, wenn Sie Fragen zur Implementierung haben oder über Webentwicklung diskutieren möchten.*
