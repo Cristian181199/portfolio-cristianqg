@@ -17,8 +17,10 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Set production environment
+# Set production environment and dummy env vars for build
 ENV NODE_ENV=production
+ENV RESEND_API_KEY=dummy
+ENV GA_MEASUREMENT_ID=dummy
 
 # Build the application
 RUN pnpm run build
