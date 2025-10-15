@@ -8,14 +8,16 @@ RUN corepack enable
 FROM base AS build
 WORKDIR /app
 
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
+# Copy package files first
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies with cache mount
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Copy source code
-COPY . .
+# Copy source code (excluding node_modules)
+COPY astro.config.mjs tsconfig.json ./
+COPY public ./public
+COPY src ./src
 
 # Set production environment and dummy env vars for build
 ENV NODE_ENV=production
