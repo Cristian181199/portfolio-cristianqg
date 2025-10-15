@@ -1,22 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 
-export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'en');
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/blog');
 }
 
-interface Props {
-  entry: CollectionEntry<'blog'>;
+const entry = await getEntry('blog', slug);
+
+if (!entry || entry.data.draft || entry.data.lang !== 'en') {
+  return Astro.redirect('/blog');
 }
 
-const { entry } = Astro.props;
 const { Content } = await entry.render();
 
 const lang = entry.data.lang;
