@@ -188,35 +188,39 @@ Response:
 
 ## 🔄 CI/CD with GitHub Actions
 
-The repository includes a GitHub Actions workflow that automatically builds and pushes Docker images to Docker Hub on every push to the `main` branch.
+The repository includes a GitHub Actions workflow that automatically builds and pushes Docker images to GitHub Container Registry (ghcr.io) on every push to the `main` branch.
 
 ### Setup
 
-1. **Create a Docker Hub account** and repository named `portfolio-cristianqg`
-2. **Add secrets to your GitHub repository**:
-   - Go to Settings → Secrets and variables → Actions
-   - Add `DOCKERHUB_USERNAME` (your Docker Hub username)
-   - Add `DOCKERHUB_TOKEN` (create a token in Docker Hub → Account Settings → Security)
+**No additional configuration needed!** The workflow uses `GITHUB_TOKEN` which is automatically provided by GitHub Actions.
 
-3. **Push to main branch**:
+1. **Push to main branch**:
    ```bash
    git push origin main
    ```
    
-   The workflow will automatically build and push your image to `username/portfolio-cristianqg:latest`.
+2. **Monitor the build**:
+   - Go to the Actions tab in your repository
+   - Watch the "Build and Push Docker Image" workflow
+   
+3. **View your image**:
+   - Go to your repository page
+   - Click on "Packages" in the right sidebar
+   - Your image will be at `ghcr.io/cristian181199/portfolio-cristianqg:latest`
 
 ## 📱 Deploying to Dokploy
 
 ### Prerequisites
 
 - Dokploy instance running
-- Docker Hub repository with your image
+- GitHub Container Registry image (built automatically by GitHub Actions)
 
 ### Deployment Steps
 
 1. **Create a new application in Dokploy**:
    - Source Type: **Docker**
-   - Docker Image: `your-username/portfolio-cristianqg:latest`
+   - Docker Image: `ghcr.io/cristian181199/portfolio-cristianqg:latest`
+   - Registry: Select "GitHub Container Registry" or leave default
 
 2. **Add environment variables**:
    - `RESEND_API_KEY`
@@ -259,12 +263,17 @@ The repository includes a GitHub Actions workflow that automatically builds and 
 
 ### Auto-Deploy with Webhooks
 
-Enable automatic deployments on Docker Hub image updates:
+Enable automatic deployments:
 
-1. Copy the webhook URL from Dokploy (Deployments tab)
-2. Go to Docker Hub → Your Repository → Webhooks
-3. Add the webhook URL
-4. Every push to `main` will now trigger an automatic deployment
+**Option 1: GitHub Actions Webhook (Recommended)**
+
+1. Get Dokploy webhook URL from Deployments tab
+2. Add to GitHub repository secrets as `DOKPLOY_WEBHOOK_URL`
+3. Update workflow to call webhook after successful build
+
+**Option 2: Manual trigger**
+
+Simply redeploy in Dokploy after each push (image updates automatically)
 
 ## 🔧 Configuration
 
