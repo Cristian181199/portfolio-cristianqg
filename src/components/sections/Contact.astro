@@ -18,10 +18,10 @@ const t = useTranslations(lang);
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Contact Form -->
       <div>
-        <form id="contact-form" class="space-y-4">
+        <form id="contact-form" class="space-y-4" novalidate>
           <div>
             <label for="name" class="block mb-2 font-medium">
-              {t('contact.form.name')}
+              {t('contact.form.name')} <span class="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -30,11 +30,12 @@ const t = useTranslations(lang);
               required
               class="w-full px-4 py-3 rounded-lg border border-secondary/20 bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
+            <div id="name-error" class="hidden text-red-500 text-sm mt-1"></div>
           </div>
           
           <div>
             <label for="email" class="block mb-2 font-medium">
-              {t('contact.form.email')}
+              {t('contact.form.email')} <span class="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -43,11 +44,12 @@ const t = useTranslations(lang);
               required
               class="w-full px-4 py-3 rounded-lg border border-secondary/20 bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
+            <div id="email-error" class="hidden text-red-500 text-sm mt-1"></div>
           </div>
           
           <div>
             <label for="message" class="block mb-2 font-medium">
-              {t('contact.form.message')}
+              {t('contact.form.message')} <span class="text-red-500">*</span>
             </label>
             <textarea
               id="message"
@@ -56,11 +58,12 @@ const t = useTranslations(lang);
               rows="5"
               class="w-full px-4 py-3 rounded-lg border border-secondary/20 bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--color-primary)] transition-colors resize-none"
             ></textarea>
+            <div id="message-error" class="hidden text-red-500 text-sm mt-1"></div>
           </div>
           
           <button
             type="submit"
-            class="w-full px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/80 text-white font-semibold rounded-lg transition-colors duration-200"
+            class="w-full px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/80 text-white font-semibold rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t('contact.form.send')}
           </button>
@@ -118,39 +121,252 @@ const t = useTranslations(lang);
 </section>
 
 <script>
-  // Note: For full functionality, you need to:
-  // 1. Add an Astro adapter (e.g., @astrojs/node)
-  // 2. Set output to 'server' or 'hybrid' in astro.config.mjs
-  // 3. Create the /src/pages/api/contact.ts endpoint
-  // See README for instructions
+  // Get language from HTML lang attribute
+  const lang = document.documentElement.lang || 'en';
   
-  const form = document.getElementById('contact-form');
-  const formMessage = document.getElementById('form-message');
-
-  form?.addEventListener('submit', (e) => {
+  // Translations for validation messages
+  const translations: Record<string, any> = {
+    en: {
+      nameRequired: 'Name is required',
+      nameWhitespace: 'Name cannot be only whitespace',
+      emailRequired: 'Email is required',
+      emailInvalid: 'Please enter a valid email address',
+      messageRequired: 'Message is required',
+      messageWhitespace: 'Message cannot be only whitespace',
+      messageTooShort: 'Message must be at least 10 characters long',
+      sending: 'Sending...',
+      send: 'Send Message',
+      success: '✓ Message sent successfully! I\'ll get back to you soon.',
+      error: '✗ Failed to send message. Please try again.'
+    },
+    es: {
+      nameRequired: 'El nombre es obligatorio',
+      nameWhitespace: 'El nombre no puede ser solo espacios en blanco',
+      emailRequired: 'El correo electrónico es obligatorio',
+      emailInvalid: 'Por favor, introduce una dirección de correo válida',
+      messageRequired: 'El mensaje es obligatorio',
+      messageWhitespace: 'El mensaje no puede ser solo espacios en blanco',
+      messageTooShort: 'El mensaje debe tener al menos 10 caracteres',
+      sending: 'Enviando...',
+      send: 'Enviar Mensaje',
+      success: '✓ ¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.',
+      error: '✗ Error al enviar el mensaje. Por favor, inténtalo de nuevo.'
+    },
+    de: {
+      nameRequired: 'Name ist erforderlich',
+      nameWhitespace: 'Name darf nicht nur aus Leerzeichen bestehen',
+      emailRequired: 'E-Mail ist erforderlich',
+      emailInvalid: 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
+      messageRequired: 'Nachricht ist erforderlich',
+      messageWhitespace: 'Nachricht darf nicht nur aus Leerzeichen bestehen',
+      messageTooShort: 'Nachricht muss mindestens 10 Zeichen lang sein',
+      sending: 'Wird gesendet...',
+      send: 'Nachricht senden',
+      success: '✓ Nachricht erfolgreich gesendet! Ich werde mich bald bei Ihnen melden.',
+      error: '✗ Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.'
+    }
+  };
+  
+  const t = translations[lang] || translations['en'];
+  
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const formMessage = document.getElementById('form-message') as HTMLElement;
+  const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+  
+  const nameInput = document.getElementById('name') as HTMLInputElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+  
+  const nameError = document.getElementById('name-error') as HTMLElement;
+  const emailError = document.getElementById('email-error') as HTMLElement;
+  const messageError = document.getElementById('message-error') as HTMLElement;
+  
+  // Helper function to show error
+  function showError(errorElement: HTMLElement, message: string, inputElement: HTMLElement) {
+    errorElement.textContent = message;
+    errorElement.classList.remove('hidden');
+    inputElement.classList.add('border-red-500');
+  }
+  
+  // Helper function to clear error
+  function clearError(errorElement: HTMLElement, inputElement: HTMLElement) {
+    errorElement.textContent = '';
+    errorElement.classList.add('hidden');
+    inputElement.classList.remove('border-red-500');
+  }
+  
+  // Validation functions
+  function validateName(value: string): string | null {
+    if (!value || value.length === 0) {
+      return t.nameRequired;
+    }
+    if (value.trim().length === 0) {
+      return t.nameWhitespace;
+    }
+    return null;
+  }
+  
+  function validateEmail(value: string): string | null {
+    if (!value || value.length === 0) {
+      return t.emailRequired;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value.trim())) {
+      return t.emailInvalid;
+    }
+    return null;
+  }
+  
+  function validateMessage(value: string): string | null {
+    if (!value || value.length === 0) {
+      return t.messageRequired;
+    }
+    if (value.trim().length === 0) {
+      return t.messageWhitespace;
+    }
+    if (value.trim().length < 10) {
+      return t.messageTooShort;
+    }
+    return null;
+  }
+  
+  // Real-time validation on blur
+  nameInput?.addEventListener('blur', () => {
+    const error = validateName(nameInput.value);
+    if (error) {
+      showError(nameError, error, nameInput);
+    } else {
+      clearError(nameError, nameInput);
+    }
+  });
+  
+  emailInput?.addEventListener('blur', () => {
+    const error = validateEmail(emailInput.value);
+    if (error) {
+      showError(emailError, error, emailInput);
+    } else {
+      clearError(emailError, emailInput);
+    }
+  });
+  
+  messageInput?.addEventListener('blur', () => {
+    const error = validateMessage(messageInput.value);
+    if (error) {
+      showError(messageError, error, messageInput);
+    } else {
+      clearError(messageError, messageInput);
+    }
+  });
+  
+  // Clear error on input
+  nameInput?.addEventListener('input', () => {
+    if (!nameError.classList.contains('hidden')) {
+      clearError(nameError, nameInput);
+    }
+  });
+  
+  emailInput?.addEventListener('input', () => {
+    if (!emailError.classList.contains('hidden')) {
+      clearError(emailError, emailInput);
+    }
+  });
+  
+  messageInput?.addEventListener('input', () => {
+    if (!messageError.classList.contains('hidden')) {
+      clearError(messageError, messageInput);
+    }
+  });
+  
+  // Form submission
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const formData = new FormData(form as HTMLFormElement);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const message = formData.get('message');
+    // Clear previous errors
+    clearError(nameError, nameInput);
+    clearError(emailError, emailInput);
+    clearError(messageError, messageInput);
     
-    // Create mailto link
-    const subject = encodeURIComponent(`Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-    const mailtoLink = `mailto:cristian181199@gmail.com?subject=${subject}&body=${body}`;
+    // Validate all fields
+    const nameValue = nameInput.value;
+    const emailValue = emailInput.value;
+    const messageValue = messageInput.value;
     
-    // Open default email client
-    window.location.href = mailtoLink;
+    const nameValidationError = validateName(nameValue);
+    const emailValidationError = validateEmail(emailValue);
+    const messageValidationError = validateMessage(messageValue);
     
-    // Show confirmation message
-    formMessage?.classList.remove('hidden', 'bg-red-500/10', 'text-red-500');
-    formMessage?.classList.add('bg-green-500/10', 'text-green-500');
-    formMessage!.textContent = 'Opening your email client...';
+    let hasErrors = false;
     
-    setTimeout(() => {
-      formMessage?.classList.add('hidden');
-      (form as HTMLFormElement).reset();
-    }, 3000);
+    if (nameValidationError) {
+      showError(nameError, nameValidationError, nameInput);
+      hasErrors = true;
+    }
+    
+    if (emailValidationError) {
+      showError(emailError, emailValidationError, emailInput);
+      hasErrors = true;
+    }
+    
+    if (messageValidationError) {
+      showError(messageError, messageValidationError, messageInput);
+      hasErrors = true;
+    }
+    
+    if (hasErrors) {
+      return;
+    }
+    
+    // Disable submit button
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = t.sending;
+    }
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          name: nameValue.trim(), 
+          email: emailValue.trim(), 
+          message: messageValue.trim() 
+        }),
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        // Show success message
+        formMessage.classList.remove('hidden', 'bg-red-500/10', 'text-red-500');
+        formMessage.classList.add('bg-green-500/10', 'text-green-500');
+        formMessage.textContent = t.success;
+        
+        // Reset form
+        form.reset();
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          formMessage.classList.add('hidden');
+        }, 5000);
+      } else {
+        // Show error message
+        formMessage.classList.remove('hidden', 'bg-green-500/10', 'text-green-500');
+        formMessage.classList.add('bg-red-500/10', 'text-red-500');
+        formMessage.textContent = result.error || t.error;
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      formMessage.classList.remove('hidden', 'bg-green-500/10', 'text-green-500');
+      formMessage.classList.add('bg-red-500/10', 'text-red-500');
+      formMessage.textContent = t.error;
+    } finally {
+      // Re-enable submit button
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = t.send;
+      }
+    }
   });
 </script>

@@ -82,8 +82,17 @@
       "message": "Nachricht",
       "send": "Nachricht senden",
       "sending": "Wird gesendet...",
-      "success": "Nachricht erfolgreich gesendet!",
-      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
+      "success": "✓ Nachricht erfolgreich gesendet! Ich werde mich bald bei Ihnen melden.",
+      "error": "✗ Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
+      "validation": {
+        "nameRequired": "Name ist erforderlich",
+        "nameWhitespace": "Name darf nicht nur aus Leerzeichen bestehen",
+        "emailRequired": "E-Mail ist erforderlich",
+        "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+        "messageRequired": "Nachricht ist erforderlich",
+        "messageWhitespace": "Nachricht darf nicht nur aus Leerzeichen bestehen",
+        "messageTooShort": "Nachricht muss mindestens 10 Zeichen lang sein"
+      }
     },
     "email": "E-Mail",
     "linkedin": "LinkedIn",

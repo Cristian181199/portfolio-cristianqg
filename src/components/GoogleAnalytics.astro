@@ -4,12 +4,122 @@ const GA_MEASUREMENT_ID = import.meta.env.GA_MEASUREMENT_ID;
 
 {GA_MEASUREMENT_ID && (
   <>
+    <!-- Google Analytics 4 -->
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
     <script define:vars={{ GA_MEASUREMENT_ID }}>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', GA_MEASUREMENT_ID);
+      
+      // Configure Google Analytics with enhanced settings
+      gtag('config', GA_MEASUREMENT_ID, {
+        page_path: window.location.pathname,
+        send_page_view: true,
+        anonymize_ip: true, // Anonimiza IPs para cumplimiento GDPR
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
+    
+    <!-- Custom Event Tracking -->
+    <script>
+      // Track contact form submissions
+      document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+          contactForm.addEventListener('submit', function() {
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'form_submission', {
+                event_category: 'Contact',
+                event_label: 'Contact Form',
+                value: 1
+              });
+            }
+          });
+        }
+        
+        // Track external links
+        document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+          if (!link.href.includes(window.location.hostname)) {
+            link.addEventListener('click', function(e) {
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'click', {
+                  event_category: 'External Link',
+                  event_label: link.href,
+                  transport_type: 'beacon'
+                });
+              }
+            });
+          }
+        });
+        
+        // Track project links
+        document.querySelectorAll('a[href*="github.com"]').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            if (typeof gtag !== 'undefined') {
+              const projectName = link.closest('div')?.querySelector('h3')?.textContent || 'Unknown Project';
+              gtag('event', 'view_project', {
+                event_category: 'Project',
+                event_label: projectName,
+                value: 1
+              });
+            }
+          });
+        });
+        
+        // Track language changes
+        const languageMenu = document.getElementById('language-menu');
+        if (languageMenu) {
+          const languageLinks = languageMenu.querySelectorAll('a');
+          languageLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+              if (typeof gtag !== 'undefined') {
+                const languageName = link.textContent?.trim() || 'Unknown';
+                gtag('event', 'language_change', {
+                  event_category: 'Engagement',
+                  event_label: languageName,
+                  value: 1
+                });
+              }
+            });
+          });
+        }
+        
+        // Track theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              gtag('event', 'theme_change', {
+                event_category: 'Engagement',
+                event_label: currentTheme === 'light' ? 'dark' : 'light',
+                value: 1
+              });
+            }
+          });
+        }
+        
+        // Track scroll depth (25%, 50%, 75%, 100%)
+        let scrollDepths = [25, 50, 75, 100];
+        let scrollDepthTriggered = [];
+        
+        window.addEventListener('scroll', function() {
+          const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+          
+          scrollDepths.forEach(function(depth) {
+            if (scrollPercent >= depth && !scrollDepthTriggered.includes(depth)) {
+              scrollDepthTriggered.push(depth);
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'scroll_depth', {
+                  event_category: 'Engagement',
+                  event_label: depth + '%',
+                  value: depth
+                });
+              }
+            }
+          });
+        });
+      });
     </script>
   </>
 )}

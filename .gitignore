@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+.vscode/
+
+# documentation files (keep only README.md)
+GOOGLE_ANALYTICS_*.md
+CONTACT_FORM_SETUP.md
+GA4_INTEGRATION_SUMMARY.md
